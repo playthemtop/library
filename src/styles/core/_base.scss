@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,600,600i,700,700i,800&display=swap&subset=cyrillic');
+
+.PtwModalRoot,
+.PtwModalRoot *,
+.PtwWidgetButton,
+.PtwWidgetButton *,
+.PtwModalRootForm,
+.PtwModalRootForm *,
+.PtwWidget,
+.PtwWidget *,
+.PtwModalRootWin,
+.PtwModalRootWin *,
+.PtwModalRootWinCoupon,
+.PtwModalRootWinCoupon * {
+  box-sizing: border-box !important;
+  outline: 0 !important;
+  font-family: 'Open Sans', sans-serif;
+  margin: 0;
+  padding: 0;
+}

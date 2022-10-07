@@ -1,0 +1,61 @@
+  .peg, .wheelSVG {
+    visibility: hidden;
+   }
+   .wheelContainer {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+   }
+   .centerCircle, .valueContainer, .wheelOutline, .wheelText {
+    pointer-events: none;
+   }
+   .wheelContainer {
+    text-align: center;
+   }
+   .wheelContainer {
+    transform: translate(-50%, 0);
+   }
+   .toast {
+    display: none !important;
+   }
+   
+   .wheelContainer {
+    position: absolute;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    left: 50%;
+    top: 0;
+   }
+   
+   .wheelSVG {
+    position: absolute;
+    overflow: visible;
+    width: 100%;
+    height: auto;
+    left: 50%; 
+    transform: translate(-50%, 0);
+   }
+   .wheelText {
+    text-anchor: middle;
+    font-family: 'Open Sans ExtraBold';
+    // -webkit-user-select: none;
+    // user-select: none;
+    font-size: 16px;
+    font-weight: 800;
+   }
+  
+  .pegContainer {
+    transform-origin: 0 -40px 0 !important;
+  }
+  .peg {
+    top: 5px;
+    opacity: 0;
+    transition: opacity .2s ease-in-out 0s;
+  }
+   @media only screen and (max-height: 480px) {
+    .wheelContainer {
+     top: 70px;
+    }
+   }

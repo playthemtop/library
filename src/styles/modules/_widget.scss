@@ -1,0 +1,50 @@
+.PtwWidget {
+  align-items: center;
+  display: flex;
+  position: fixed;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 0;
+  z-index: 16777271;
+  &__button {
+    @extend .fade-in-right;
+    background: none;
+    border: 0;
+    padding: 0;
+    right: 60px;
+    position: relative;
+    cursor: pointer;
+    &_hide {
+      @extend .fade-out-right;
+    }
+  }
+  &__inner {
+    align-items: center;
+    display: flex;
+    box-sizing: border-box;
+    border: 1px solid #CEE1F6;
+    border-radius: 4px;
+    min-width: 50px;
+    min-height: 143px;
+    padding: 50px 0 15px;
+    color: #323232;
+    font-family: "Open Sans";
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    transform: rotate(180deg);
+    white-space: nowrap;
+    writing-mode: tb-rl;
+  }
+  &__icon {
+    background-size: 28px 28px;
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    width: 28px;
+    transform: rotate(180deg);
+    height: 28px;
+    position: absolute;
+    top: 4px;
+  }
+}
