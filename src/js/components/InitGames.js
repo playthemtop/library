@@ -64,8 +64,8 @@ class InitGames {
     script.id = 'PtwScriptSpin2WinWheel';
     script.onload = () => {
       const mySpinBtn = document.querySelector('.PtwModalRoot__button');
-      let myWheel = new Spin2WinWheel();
-      myWheel.init({
+      let spinWinWheel = new Spin2WinWheel();
+      spinWinWheel.init({
         data: this.wheelData,
         onResult: this.couponCodeResultForRouletteGame,
         // onGameEnd: e => console.log('onGameEnd', e),

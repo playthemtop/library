@@ -3,12 +3,12 @@ import { PTW } from 'lib';
 const PARAMS_DEFAULT = {
   game_style: {
     popup_bg: {
-      bg_image: 'https://i.imgur.com/oFRZe7o.png',
+      bg_image: `${API.baseUrl}/uploads/images/bg.png`,
       bg_overlay: 'rgba(78, 145, 217, 0.3)',
     },
     color_scheme: {
       bg_window: '#fff',
-      bg_wheel: 'blue', // #80BFFF
+      bg_wheel: '#80BFFF',
       bg_indicator_button: '#FF6262',
       text_content: '#303F5E',
       text_wheel: '#fff',
@@ -173,12 +173,12 @@ const PARAMS_DEFAULT = {
 window.PTW = PTW;
 
 // for localhost test
-// new PTW({
-//   data: {
-//     params: PARAMS_DEFAULT,
-//     game: 'roulette', // roulette, scratch, remember
-//   },
-//   isPreview: true,
-// });
+new PTW({
+  data: {
+    params: PARAMS_DEFAULT,
+    game: 'scratch', // roulette, scratch, remember
+  },
+  isPreview: true,
+});
 
 export default PTW;
