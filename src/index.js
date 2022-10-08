@@ -173,12 +173,12 @@ const PARAMS_DEFAULT = {
 window.PTW = PTW;
 
 // for localhost test
-new PTW({
-  data: {
-    params: PARAMS_DEFAULT,
-    game: 'roulette', // roulette, scratch, remember
-  },
-  isPreview: true,
-});
+// new PTW({
+//   data: {
+//     params: PARAMS_DEFAULT,
+//     game: 'roulette', // roulette, scratch, remember
+//   },
+//   isPreview: true,
+// });
 
 export default PTW;
