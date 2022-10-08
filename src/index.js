@@ -173,10 +173,8 @@ const PARAMS_DEFAULT = {
 
 window.PTW = PTW;
 
-const isDevMode = process.env.NODE_ENV === 'development';
-
 // for localhost test
-if (isDevMode) {
+if (process.env.NODE_ENV === 'development') {
   new PTW({
     data: {
       params: PARAMS_DEFAULT,
