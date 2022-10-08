@@ -8,7 +8,7 @@ const PARAMS_DEFAULT = {
     },
     color_scheme: {
       bg_window: '#fff',
-      bg_wheel: '#80BFFF',
+      bg_wheel: 'rgba(78, 145, 217, 1)',
       bg_indicator_button: '#FF6262',
       text_content: '#303F5E',
       text_wheel: '#fff',

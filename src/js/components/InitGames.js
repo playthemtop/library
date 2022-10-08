@@ -143,10 +143,10 @@ class InitGames {
         brush        = new Image();
 
         const dataImages = {
-          blue: ptwScratchImageBgBlue,
-          green: ptwScratchImageBgGreen,
-          red: ptwScratchImageBgRed,
-          yellow: ptwScratchImageBgYellow,
+          'rgba(78, 145, 217, 1)': ptwScratchImageBgBlue,
+          'rgba(78, 217, 140, 1)': ptwScratchImageBgGreen,
+          'rgba(217, 78, 78, 1)': ptwScratchImageBgRed,
+          'rgba(255, 217, 72, 1)': ptwScratchImageBgYellow,
         };
 
       // base64 Workaround because Same-Origin-Policy
