@@ -12,7 +12,7 @@
   "private": true,
   "scripts": {
     "start": "webpack-dev-server --mode development --open --progress",
-    "build": "webpack --mode production --progress && scp -r /apps/library/build/playthem-widget.min.js root@164.92.145.94:/var/www/api.playthem.top/build/uploads/games"
+    "build": "webpack --mode production --progress && scp -r ~/apps/library/build/playthem-widget.min.js /var/www/api.playthem.top/uploads/games && pm2 restart backend"
   },
   "browserslist": [
     "> 1%",
