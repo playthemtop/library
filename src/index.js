@@ -173,15 +173,17 @@ const PARAMS_DEFAULT = {
 
 window.PTW = PTW;
 
-
+const isDevMode = process.env.NODE_ENV === 'development';
 
 // for localhost test
-new PTW({
-  data: {
-    params: PARAMS_DEFAULT,
-    game: 'scratch', // roulette, scratch, remember
-  },
-  isPreview: true,
-});
+if (isDevMode) {
+  new PTW({
+    data: {
+      params: PARAMS_DEFAULT,
+      game: 'scratch', // roulette, scratch, remember
+    },
+    isPreview: true,
+  });
+}
 
 export default PTW;
