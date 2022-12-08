@@ -6,7 +6,7 @@ const PARAMS_DEFAULT = {
   game_style: {
     popup_bg: {
       bg_image: `${API.baseUrl}/uploads/images/bg.png`,
-      bg_overlay: 'rgba(78, 145, 217, 0.3)',
+      bg_overlay: 'rgba(78, 145, 217, 0.5)',
     },
     color_scheme: {
       bg_window: '#fff',
