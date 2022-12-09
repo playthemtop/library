@@ -32,7 +32,7 @@ class Steps {
   progress = () => {
     const {
       ptwModalButtonStart, ptwModalTitle, ptwModalSubTitle, ptwModalForm, ptwModalCloseButton,
-      ptwModalFormWrap,
+      ptwModalFormWrap, ptwModalRootGame,
     } = this.elements;
     const { content: { progress } } = this.activeGameData.params;
     const getPtwModalFormInputs = document.querySelectorAll('.PtwModalRootForm__input');
@@ -45,6 +45,7 @@ class Steps {
 
     setTimeout(() => {
       ptwModalFormWrap.style.zIndex = '-1';
+      ptwModalRootGame.style.pointerEvents = 'all';
       ptwModalTitle.innerText = progress.title;
       ptwModalSubTitle.innerText = progress.subtitle;
 
