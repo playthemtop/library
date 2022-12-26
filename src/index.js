@@ -149,17 +149,16 @@ const PARAMS_DEFAULT = {
           value: 3000,
         },
       ],
-      show_on_leaving: true,
-      where_game_show: ['about'],
       trigger_button: true,
       email_repeat: true,
-      show_count: 10,
-      show_after_hit: {
-        checked: true,
-        value: ['5', 'days'],
-      },
       send_on_email: false,
-      exp_copied: '10',
+      // where_game_show: ['about'],
+      // show_count: 10,
+      // show_on_leaving: false,
+      // show_after_hit: {
+      //   checked: true,
+      //   value: ['5', 'days'],
+      // },
     },
     trigger_button: {
       title: 'Get a gift',
@@ -176,11 +175,12 @@ window.PTW = PTW;
 // for localhost test
 if (process.env.NODE_ENV === 'development') {
   new PTW({
+    accessKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2M2EyMWQyZTFhOGQ2ZjhhOWM5YWE1MTgiLCJkb21haW4iOiJsb2NhbGhvc3QiLCJ0eXBlIjoiYWNjZXNzS2V5IiwiaWF0IjoxNjcxNTcwOTI3fQ.Q1Aclibn-SeDT89lsTCA4abNrfdrODLgckdi2CigTBM',
     data: {
       params: PARAMS_DEFAULT,
-      game: 'scratch', // roulette, scratch, remember
+      game: 'roulette', // roulette, scratch, remember
     },
-    isPreview: true,
+    isPreview: false,
   });
 }
 

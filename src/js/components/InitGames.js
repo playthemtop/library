@@ -129,7 +129,6 @@ class InitGames {
     getPtwRootCurrentGame.appendChild(ptwScratchContent);
 
     const getPtwScratchItems = document.querySelectorAll('.PtwScratchContainer > .canvas');
-
     getPtwScratchItems.forEach((canvasItem) => {
       const { ptwScratchImageBrush, ptwScratchImageBgBlue, ptwScratchImageBgRed, ptwScratchImageBgGreen, ptwScratchImageBgYellow } = ptwScratchImages();
 
@@ -143,14 +142,19 @@ class InitGames {
         brush        = new Image();
 
         const dataImages = {
-          'rgba(78, 145, 217, 1)': ptwScratchImageBgBlue,
-          'rgba(78, 217, 140, 1)': ptwScratchImageBgGreen,
-          'rgba(217, 78, 78, 1)': ptwScratchImageBgRed,
-          'rgba(255, 217, 72, 1)': ptwScratchImageBgYellow,
+          // 'rgba(78, 145, 217, 1)': ptwScratchImageBgBlue,
+          // 'rgba(78, 217, 140, 1)': ptwScratchImageBgGreen,
+          // 'rgba(217, 78, 78, 1)': ptwScratchImageBgRed,
+          // 'rgba(255, 217, 72, 1)': ptwScratchImageBgYellow,
+          'rgba(78, 145, 217, 1)': `${API.baseUrl}/uploads/games/scratch/blue.jpg`,
+          'rgba(78, 217, 140, 1)': `${API.baseUrl}/uploads/games/scratch/green.jpg`,
+          'rgba(217, 78, 78, 1)': `${API.baseUrl}/uploads/games/scratch/red.jpg`,
+          'rgba(255, 217, 72, 1)': `${API.baseUrl}/uploads/games/scratch/yellow.jpg`,
         };
 
       // base64 Workaround because Same-Origin-Policy
       image.src = dataImages[bgWheel];
+      image.setAttribute('crossOrigin', 'Anonymous');
       image.onload = function() {
               // get the scale
           const scale = Math.max(canvas.width / image.width, canvas.height / image.height);
@@ -255,7 +259,7 @@ class InitGames {
 
           canvasList.forEach(itemNotSelected => {
             if(itemNotSelected.id !== canvas.id) {
-              itemNotSelected.parentElement.classList.add('PtwScratchContainer_disabled')
+              itemNotSelected.parentElement.classList.add('PtwScratchContainer_disabled');
             }
           });
 
@@ -272,9 +276,9 @@ class InitGames {
             setTimeout(() => {
               const step = new Steps(data.elements, data.activeGameData);
               step.win({
-                name: couponItem ? couponItem.value : 'finish',
-                code: couponItem ? couponItem.resultText : 'A44TR'
-              }, data.isPreview);
+                name: couponItem ? couponItem.value : '',
+                code: couponItem ? couponItem.resultText : ''
+              }, data.isPreview, couponItem);
             }, 1600);
           }
 

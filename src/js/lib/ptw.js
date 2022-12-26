@@ -6,6 +6,8 @@ import { FormSchema } from 'helpers/validation';
 import 'styles/main.scss';
 
 window.ptwIsProgress = false;
+window.emailToGlobal = '';
+window.accessKeyGlobal = '';
 
 class PTW {
   constructor({ accessKey, data, isPreview }) {
@@ -23,6 +25,8 @@ class PTW {
     this.accessKeyDecode = new ValidateAccessKey(accessKey, isPreview);
     this.activeGameData = {};
     this.init();
+
+    window.accessKeyGlobal = this.accessKey;
   };
 
   init = async () => {
@@ -40,6 +44,8 @@ class PTW {
     };
 
     this.elements = new InitGames(this.activeGameData, this.isPreview);
+
+    console.log('elements', this.elements);
 
     this.modal = new Modal(
       this.accessKey,
@@ -98,22 +104,25 @@ class PTW {
     const { params } = this.activeGameData;
     const { display_game } = params.behavior.general_settings;
     const showModal = display_game.find(item => item.checked);
+
     if (this.isPreview) {
       this.modal.show();
     } else {
       this.modal[`showWith_${showModal.name}`](showModal.value);
       new Actions.impr(this.accessKey);
     }
+
     this.handleChange();
     this.handleStartGame();
   }
 
   nextStep = () => {
-    this.isValidateForm = true;
     const step = new Steps(this.elements.elements, this.activeGameData, this.isPreview);
+    this.isValidateForm = true;
+
     step.progress();
     this.isValidateForm = false;
-    this.formData = {};
+    // this.formData = {};
   }
 };
 

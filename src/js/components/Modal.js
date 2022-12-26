@@ -53,7 +53,7 @@ class Modal {
 
   showOnLeaving = () => {
     const isPtwShowStorage = STORAGE.getItem('PTW_isShow');
-    console.log('isPtwShowStorage', isPtwShowStorage)
+
     const { general_settings: generalSettings } = this.activeGameData.params.behavior;
     if (generalSettings.show_on_leaving && !isPtwShowStorage) {
 
@@ -106,6 +106,7 @@ class Modal {
         ptwModalForm.classList.remove('PtwModalRootForm_hide');
         ptwModalRoot.remove();
       }, 300);
+
       STORAGE.setItem('PTW_onscroll', false);
       STORAGE.setItem('PTW_isShow', false);
     }
@@ -174,6 +175,9 @@ class Modal {
       case 'scratch':
         const getPtwScratchContent = document.querySelector('.PtwScratchContent');
         if (getPtwScratchContent) getPtwScratchContent.remove();
+        break;
+      case 'remember':
+        console.log('remember reset');
         break;
     }
   }

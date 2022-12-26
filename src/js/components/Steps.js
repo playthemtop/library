@@ -1,3 +1,7 @@
+import { Actions } from 'components';
+
+let render = 0;
+
 class Steps {
   constructor(elements, activeGameData, isPreview) {
     this.elements = elements;
@@ -50,6 +54,9 @@ class Steps {
       ptwModalSubTitle.innerText = progress.subtitle;
 
       getPtwModalFormInputs.forEach(input => {
+        if(input.type === 'email') {
+          window.emailToGlobal = input.value;
+        }
         input.value = '';
       });
     }, 450);
@@ -59,21 +66,36 @@ class Steps {
     }, 600);
   }
 
-  win = (data, isPreview) => {
-    const { content: { finish } } = this.activeGameData.params;
+  win = async (data, isPreview) => {
+    const { content: { finish }, behavior: { general_settings: generalSettings }  } = this.activeGameData.params;
+    render = render + 1;
+
+    if (!isPreview && generalSettings?.send_on_email && render === 1) {
+      new Actions.request({
+        path: 'send-coupon-by-email',
+        body: {
+          accessKey: window.accessKeyGlobal,
+          email: window.emailToGlobal,
+          name: data.name,
+          code: data.code,
+        }
+      });
+    }
+
     const {
       ptwModalDialogInner, ptwModalTitle, ptwModalSubTitle, ptwModalIcon, ptwModalRootWin,
       ptwModalRootWinCouponTitle, ptwModalRootWinCouponCode, ptwModalCloseButton,
     } = this.elements;
 
     window.ptwIsProgress = false;
-    ptwModalCloseButton.removeAttribute('disabled');
+    window.emailToGlobal = '';
 
+    ptwModalCloseButton.removeAttribute('disabled');
     ptwModalIcon.classList.add('jello-horizontal');
     ptwModalTitle.innerText = finish.title;
     ptwModalSubTitle.innerText = `${finish.subtitle}`;
-    ptwModalRootWinCouponTitle.innerText = (isPreview ? '25% DISCOUNT!' : data.name);
-    ptwModalRootWinCouponCode.innerText = (isPreview ? 'test_code' : data.code);
+    ptwModalRootWinCouponTitle.innerText = data.name;
+    ptwModalRootWinCouponCode.innerText = data.code;
     ptwModalDialogInner.style.backgroundImage = 'url(https://i.gifer.com/6ob.gif)';
     ptwModalDialogInner.appendChild(ptwModalRootWin);
   }
