@@ -36,7 +36,7 @@ const modalWin = data => {
 
   const ptwModalRootWinButton = document.createElement('a');
   ptwModalRootWinButton.className = 'PtwModalRootWin__button';
-  ptwModalRootWinButton.innerText = 'use it now';
+  ptwModalRootWinButton.innerText = 'Copy coupon code & close widget';
 
   const ptwModalRootWinInfo = document.createElement('p');
   ptwModalRootWinInfo.className = 'PtwModalRootWin__info';
@@ -50,6 +50,7 @@ const modalWin = data => {
   ptwModalRootWin.appendChild(ptwModalRootWinBtnWrap);
 
   return {
+    ptwModalRootWinButton,
     ptwModalRootWin,
     ptwModalRootWinCouponTitle,
     ptwModalRootWinCouponCode,

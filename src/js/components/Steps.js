@@ -1,4 +1,4 @@
-import { Actions } from 'components';
+import { Actions, Modal } from 'components';
 
 let render = 0;
 

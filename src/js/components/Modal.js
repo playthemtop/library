@@ -113,7 +113,7 @@ class Modal {
   }
 
   handleModalClose = () => {
-    const { ptwModalCloseButton } = this.elements;
+    const { ptwModalCloseButton, ptwModalRootWinButton } = this.elements;
     document.addEventListener('keydown', e => {
       let keyCode = e.keyCode;
       if (keyCode === 27) {
@@ -122,6 +122,10 @@ class Modal {
     });
 
     ptwModalCloseButton.addEventListener('click', () => {
+      this.hide();
+    });
+
+    ptwModalRootWinButton.addEventListener('click', () => {
       this.hide();
     });
   }
