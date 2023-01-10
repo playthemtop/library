@@ -95,3 +95,24 @@
     line-height: 24px;
   }
 }
+
+.pwtRememberGameOver {
+  position: absolute;
+  top: 38px;
+  background: #fa3b3b;
+  left: 50%;
+  border-radius: 3px;
+  font-size: 14px;
+  font-weight: normal;
+  text-align: center;
+  margin-left: -150px;
+  width: 300px;
+  color: #fff;
+  padding: 15px;
+  margin-top: -25px;
+  box-shadow: 0 0 10px rgb(0 0 0 / 40%);
+  z-index: 22;
+   h3 {
+    color: #fff;
+   }
+}

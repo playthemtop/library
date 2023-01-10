@@ -62,9 +62,11 @@ class InitGames {
     const script = document.createElement('script');
     script.src = `${API.baseUrl}${API.game.spin}`;
     script.id = 'PtwScriptSpin2WinWheel';
+
     script.onload = () => {
       const mySpinBtn = document.querySelector('.PtwModalRoot__button');
       let spinWinWheel = new Spin2WinWheel();
+
       spinWinWheel.init({
         data: this.wheelData,
         onResult: this.couponCodeResultForRouletteGame,
@@ -129,23 +131,20 @@ class InitGames {
     getPtwRootCurrentGame.appendChild(ptwScratchContent);
 
     const getPtwScratchItems = document.querySelectorAll('.PtwScratchContainer > .canvas');
+
     getPtwScratchItems.forEach((canvasItem) => {
-      const { ptwScratchImageBrush, ptwScratchImageBgBlue, ptwScratchImageBgRed, ptwScratchImageBgGreen, ptwScratchImageBgYellow } = ptwScratchImages();
+      const { ptwScratchImageBrush } = ptwScratchImages();
 
       let isDrawing,
         lastPoint,
         canvas = canvasItem,
         ctx = canvas.getContext('2d', { willReadFrequently: true }),
-        canvasWidth  = canvas.width,
+        canvasWidth = canvas.width,
         canvasHeight = canvas.height,
-        image        = new Image(),
-        brush        = new Image();
+        image = new Image(),
+        brush = new Image();
 
-        const dataImages = {
-          // 'rgba(78, 145, 217, 1)': ptwScratchImageBgBlue,
-          // 'rgba(78, 217, 140, 1)': ptwScratchImageBgGreen,
-          // 'rgba(217, 78, 78, 1)': ptwScratchImageBgRed,
-          // 'rgba(255, 217, 72, 1)': ptwScratchImageBgYellow,
+        let dataImages = {
           'rgba(78, 145, 217, 1)': `${API.baseUrl}/uploads/games/scratch/blue.jpg`,
           'rgba(78, 217, 140, 1)': `${API.baseUrl}/uploads/games/scratch/green.jpg`,
           'rgba(217, 78, 78, 1)': `${API.baseUrl}/uploads/games/scratch/red.jpg`,
@@ -157,21 +156,23 @@ class InitGames {
       image.setAttribute('crossOrigin', 'Anonymous');
       image.onload = function() {
               // get the scale
-          const scale = Math.max(canvas.width / image.width, canvas.height / image.height);
+          let scale = Math.max(canvas.width / image.width, canvas.height / image.height);
           // get the top left position of the image
-          const x = (canvas.width / 2) - (image.width / 2) * scale;
-          const y = (canvas.height / 2) - (image.height / 2) * scale;
+          let x = (canvas.width / 2) - (image.width / 2) * scale;
+          let y = (canvas.height / 2) - (image.height / 2) * scale;
         ctx.drawImage(image, x, y, image.width * scale, image.height * scale);
         // Show the form when Image is loaded.
         // document.querySelectorAll('.form')[0].style.visibility = 'visible';
       };
 
       brush.src = ptwScratchImageBrush;
-      const data = {
+
+      let data = {
         elements: this.elements,
         activeGameData: this.activeGameData,
         isPreview: this.isPreview,
       };
+
       canvas.addEventListener('mousedown', handleMouseDown, false);
       canvas.addEventListener('touchstart', handleMouseDown, false);
       canvas.addEventListener('mousemove', handleMouseMove(getPtwScratchItems, data), false);
@@ -226,20 +227,18 @@ class InitGames {
       function handlePercentage(filledInPixels) {
 
         filledInPixels = filledInPixels || 0;
-        console.log('percent: ', filledInPixels + '%');
 
-        if (filledInPixels > 50) {
-          canvas.parentNode.removeChild(canvas);
+        if (filledInPixels >= 50) {
+          canvas.parentNode?.removeChild(canvas);
         }
       }
 
       function handleMouseDown(e) {
-        // console.log('handleMouseDown');
         isDrawing = true;
         lastPoint = getMouse(e, canvas);
       }
     
-      function handleMouseMove(canvasList, data) {
+      function handleMouseMove(canvasList, data) {;
         return function(e) {
           if (!isDrawing) { return; }
           e.preventDefault();
@@ -263,38 +262,242 @@ class InitGames {
             }
           });
 
-          const getFilledInPx = getFilledInPixels(32);
+          let getFilledInPx = getFilledInPixels(20);
 
-          if (getFilledInPx >= 50) {
-            const { ptwModalRootGame } = data.elements;
-            const couponItem = coupons.find(item => item.id === canvas.id.substring(10));
+          const winner = () => {
+            if (getFilledInPx >= 50) {
+              const { ptwModalRootGame } = data.elements;
+              let couponItem = coupons.find(item => item.id === canvas.id.substring(10));
+  
+              setTimeout(() => {
+                ptwModalRootGame.classList.add('PtwModalRootGame_hide');
+              }, 1200);
+  
+              setTimeout(() => {
+                const step = new Steps(data.elements, data.activeGameData);
+                step.win({
+                  name: couponItem ? couponItem.value : '',
+                  code: couponItem ? couponItem.resultText : ''
+                }, data.isPreview, couponItem);
+              }, 1600);
+            }
 
-            setTimeout(() => {
-              ptwModalRootGame.classList.add('PtwModalRootGame_hide');
-            }, 1200);
-
-            setTimeout(() => {
-              const step = new Steps(data.elements, data.activeGameData);
-              step.win({
-                name: couponItem ? couponItem.value : '',
-                code: couponItem ? couponItem.resultText : ''
-              }, data.isPreview, couponItem);
-            }, 1600);
+            handlePercentage(getFilledInPixels(20));
           }
 
-          handlePercentage(getFilledInPixels(32));
+          winner();
+
+          setTimeout(() => {
+            if (getFilledInPx === 0) {
+              getFilledInPx = 50;
+              winner();
+            }
+          }, 3000);
         }
       }
 
       function handleMouseUp(e) {
-        // console.log('handleMouseUp');
         isDrawing = false;
       }
     });
   }
 
   remember = () => {
-    // console.log('remember');
+    const { ptwModalRootGameCurrent, ptwModalRootGame, ptwModalButtonStart } = this.elements;
+    const { params } = this.activeGameData;
+
+    const data = {
+      elements: this.elements,
+      activeGameData: this.activeGameData,
+      isPreview: this.isPreview,
+    };
+
+    const template = `
+    <div class="wrap">
+      <div class="game"></div>
+    </div>
+    `;
+
+    ptwModalRootGameCurrent.insertAdjacentHTML('beforeend', template);
+
+    const script = document.createElement('script');
+    script.src = 'https://code.jquery.com/jquery-3.6.3.min.js';
+    script.id = 'PTWJQueryScript';
+    document.head.prepend(script);
+
+    let count = 0;
+
+    let Memory = {
+      init: function(cards){
+        this.$game = $(".game");
+        this.$modal = $(".modal");
+        this.$overlay = $(".modal-overlay");
+        this.$restartButton = $("button.restart");
+        this.cardsArray = $.merge(cards, cards);
+        this.shuffleCards(this.cardsArray);
+        this.setup();
+      },
+
+      shuffleCards: function(cardsArray){
+        this.$cards = $(this.shuffle(this.cardsArray));
+      },
+
+      setup: function(){
+        this.html = this.buildHTML();
+        this.$game.html(this.html);
+        this.$memoryCards = $(".card");
+        this.paused = false;
+        this.guess = null;
+        this.binding();
+      },
+  
+      binding: function() {
+        this.$memoryCards.on("click", this.cardClicked);
+        this.$restartButton.on("click", $.proxy(this.reset, this));
+      },
+
+      // kinda messy but hey
+      cardClicked: function() {
+        let _ = Memory;
+        let $card = $(this);
+
+        if(!_.paused && !$card.find(".inside").hasClass("matched") && !$card.find(".inside").hasClass("picked")){
+          $card.find(".inside").addClass("picked");
+          count += 1;
+
+          if(!_.guess) {
+            _.guess = $(this).attr("data-id");
+          } else if(_.guess == $(this).attr("data-id") && !$(this).hasClass("picked")) {
+            $(".picked").addClass("matched");
+            _.guess = null;
+          } else {
+            _.guess = null;
+            _.paused = true;
+            setTimeout(function(){
+              $(".picked").removeClass("picked");
+              Memory.paused = false;
+            }, 600);
+          }
+
+          if($(".matched").length === 2) {
+            _.win();
+          } else if (!$(".matched").length && count >= 10) {
+            Memory.gameOver();
+          }
+        }
+      },
+
+      gameOver: function() {
+        const wrapEl = document.querySelector('.wrap');
+        let timer2 = 3;
+
+        this.paused = true;
+        count = 0;
+
+        const gameOverTpl = `
+          <div class="pwtRememberGameOver">
+            <h3>Game over!</h3>
+          </div>
+        `;
+
+        setTimeout(function() {
+          Memory.showModal();
+          Memory.$game.fadeOut();
+          wrapEl.insertAdjacentHTML('beforeend', gameOverTpl);
+        }, 500);
+
+        setTimeout(function() {
+          const step = new Steps(data.elements, data.activeGameData);
+          step.start();
+        }, 1500);
+
+        setTimeout(function() {
+          document.querySelector('.pwtRememberGameOver').remove();
+          Memory.reset();
+        }, 2000);
+      },
+
+      win: function(){
+        this.paused = true;
+        setTimeout(function() {
+          Memory.showModal();
+          Memory.$game.fadeOut();
+
+          ptwModalRootGame.classList.add('PtwModalRootGame_hide');
+          ptwModalButtonStart.classList.add('PtwModalRoot__button_hide');
+        }, 1000);
+
+        setTimeout(() => {
+          const getIdCard = document.querySelectorAll(".matched")[0].parentElement.dataset.id;
+          const couponSelected = this.cardsArray.find(item => item.id === getIdCard);
+          const step = new Steps(data.elements, data.activeGameData);
+
+          step.win({
+            name: couponSelected.value,
+            code: couponSelected.resultText,
+          }, data.isPreview);
+
+          Memory.reset();
+        }, 1500);
+      },
+  
+      showModal: function(){
+        this.$overlay.show();
+        this.$modal.fadeIn("slow");
+      },
+  
+      hideModal: function(){
+        this.$overlay.hide();
+        this.$modal.hide();
+      },
+
+      reset: function(){
+        this.hideModal();
+        this.shuffleCards(this.cardsArray);
+        this.setup();
+        this.$game.show("slow");
+      },
+
+      // Fisher--Yates Algorithm -- https://bost.ocks.org/mike/shuffle/
+      shuffle: function(array){
+        let counter = array.length, temp, index;
+          // While there are elements in the array
+          while (counter > 0) {
+            // Pick a random index
+            index = Math.floor(Math.random() * counter);
+            // Decrease counter by 1
+            counter--;
+            // And swap the last element with it
+            temp = array[counter];
+            array[counter] = array[index];
+            array[index] = temp;
+          }
+          return array;
+      },
+  
+      buildHTML: function() {
+        let frag = '';
+        this.$cards.each(function(k, v){
+          frag += `<div class="card" data-id="${v.id}"><div class="inside">
+            <div class="front">${v.value}</div>
+              <div class="back" style="background-color: ${params.game_style.color_scheme.bg_wheel}"></div>
+            </div>
+          </div>`;
+        });
+        return frag;
+      }
+    };
+
+    console.log('params2', params);
+
+    if (params) {
+      script.onload = () => {
+        let coupons = [];
+        coupons = [...params.behavior.coupons];
+
+        Memory.init(coupons);
+      };
+    }
   }
 }
 

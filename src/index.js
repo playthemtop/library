@@ -102,28 +102,6 @@ const PARAMS_DEFAULT = {
           value: 'No Luck :(',
         },
       },
-      {
-        id: 'asds-asd13-12312asd-4444',
-        probability: 0,
-        chanceReal: 0,
-        type: 'string',
-        value: '50% Discount',
-        resultText: '50OFF',
-        userData: {
-          value: '50% Discount',
-        },
-      },
-      {
-        id: 'asds-asd13-12312asd-5555',
-        probability: 0,
-        chanceReal: 0,
-        type: 'string',
-        value: '150% Discount',
-        resultText: '50OFF',
-        userData: {
-          value: '50% Discount',
-        },
-      },
     ],
     general_settings: {
       display_game: [
@@ -175,10 +153,10 @@ window.PTW = PTW;
 // for localhost test
 if (process.env.NODE_ENV === 'development') {
   new PTW({
-    accessKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2M2EyMWQyZTFhOGQ2ZjhhOWM5YWE1MTgiLCJkb21haW4iOiJsb2NhbGhvc3QiLCJ0eXBlIjoiYWNjZXNzS2V5IiwiaWF0IjoxNjcxNTcwOTI3fQ.Q1Aclibn-SeDT89lsTCA4abNrfdrODLgckdi2CigTBM',
+    accessKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2M2FhMmU3MWE2MDliZTBjYjNjNTM3OTAiLCJkb21haW4iOiJsb2NhbGhvc3QiLCJ0eXBlIjoiYWNjZXNzS2V5IiwiaWF0IjoxNjcyMzMyOTczfQ.zCgM9tEBYna_lswZvnwf5sGBIfRt12XukLCgR1El-58',
     data: {
       params: PARAMS_DEFAULT,
-      game: 'roulette', // roulette, scratch, remember
+      game: 'remember', // roulette, scratch, remember
     },
     isPreview: false,
   });

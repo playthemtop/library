@@ -1,3 +1,4 @@
+import API from 'config/api';
 import { Actions, Modal } from 'components';
 
 let render = 0;
@@ -8,6 +9,33 @@ class Steps {
     this.activeGameData = activeGameData;
     this.isPreview = isPreview;
     window.ptwIsProgress = false;
+  }
+
+  start = () => {
+    const {
+      ptwModalButtonStart, ptwModalTitle, ptwModalSubTitle, ptwModalForm, ptwModalCloseButton,
+      ptwModalFormWrap, ptwModalRootGame
+    } = this.elements;
+    const { content: { start } } = this.activeGameData.params;
+    const getPtwModalFormInputs = document.querySelectorAll('.PtwModalRootForm__input');
+    const getPtwSpin2WheelPeg = document.querySelector('.peg');
+
+    ptwModalForm.classList.remove('PtwModalRootForm_hide');
+    ptwModalButtonStart.classList.remove('PtwModalRoot__button_hide');
+
+    if (getPtwSpin2WheelPeg) {
+      getPtwSpin2WheelPeg.style.opacity = 0;
+    }
+
+    ptwModalButtonStart.removeAttribute('disabled');
+    ptwModalFormWrap.style.zIndex = 2;
+    ptwModalRootGame.style.pointerEvents = 'none';
+    ptwModalTitle.innerText = start.title;
+    ptwModalSubTitle.innerText = start.subtitle;
+
+    getPtwModalFormInputs.forEach(input => {
+      input.value = '';
+    });
   }
 
   progressGame_roulette = () => {
@@ -29,8 +57,10 @@ class Steps {
   }
 
   progressGame_remember = () => {
-    console.log('run remember!')
-    // document.body.style.backgroundColor = 'blue';
+    const { ptwModalButtonStart, ptwModalCloseButton } = this.elements;
+    ptwModalCloseButton.removeAttribute('disabled');
+    ptwModalButtonStart.classList.add('PtwModalRoot__button_hide');
+    window.ptwIsProgress = false;
   }
 
   progress = () => {
@@ -96,7 +126,7 @@ class Steps {
     ptwModalSubTitle.innerText = `${finish.subtitle}`;
     ptwModalRootWinCouponTitle.innerText = data.name;
     ptwModalRootWinCouponCode.innerText = data.code;
-    ptwModalDialogInner.style.backgroundImage = 'url(https://i.gifer.com/6ob.gif)';
+    ptwModalDialogInner.style.backgroundImage = `url(${API.baseUrl}/uploads/images/win.gif)`;
     ptwModalDialogInner.appendChild(ptwModalRootWin);
   }
 }

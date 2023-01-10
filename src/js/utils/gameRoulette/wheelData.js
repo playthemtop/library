@@ -9,7 +9,7 @@ const wheelData = {
   "wheelSize": 900,
   "wheelTextOffsetY": 120,
   "wheelTextColor": "#fff",
-  "wheelTextSize": "2em",
+  "wheelTextSize": "32px",
   "wheelImageOffsetY": 40,
   "wheelImageSize": 50,
   "centerCircleSize": 280,

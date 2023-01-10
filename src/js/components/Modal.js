@@ -109,6 +109,9 @@ class Modal {
 
       STORAGE.setItem('PTW_onscroll', false);
       STORAGE.setItem('PTW_isShow', false);
+
+      const PTWJQueryScriptEl = document.querySelector('#PTWJQueryScript');
+      if (PTWJQueryScriptEl) PTWJQueryScriptEl.remove();
     }
   }
 
@@ -125,7 +128,13 @@ class Modal {
       this.hide();
     });
 
-    ptwModalRootWinButton.addEventListener('click', () => {
+    ptwModalRootWinButton.addEventListener('click', event => {
+      const currentEl = event.target;
+      const parentEl = currentEl.closest('.PtwModalRootWin');
+      const couponCodeEl = parentEl.querySelector('.PtwModalRootWinCoupon__code');
+
+      window.navigator.clipboard.writeText(couponCodeEl?.textContent || '');
+
       this.hide();
     });
   }
@@ -181,7 +190,8 @@ class Modal {
         if (getPtwScratchContent) getPtwScratchContent.remove();
         break;
       case 'remember':
-        console.log('remember reset');
+        const PTWJQueryScriptEl = document.querySelector('#PTWJQueryScript');
+        if (PTWJQueryScriptEl) PTWJQueryScriptEl.remove();
         break;
     }
   }

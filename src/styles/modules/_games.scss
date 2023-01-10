@@ -129,3 +129,165 @@
   transition: transform 0.5s cubic-bezier(0.5, 0, 0.5, 1), -webkit-transform 0.5s cubic-bezier(0.5, 0, 0.5, 1);
   transition-delay: calc(var(--flip-delay) * 50ms);
 }
+
+// remember
+.wrap {
+  position: relative;
+  height: 100%;
+  min-height: 500px;
+  padding-bottom: 20px;
+}
+
+.game {
+	transform-style: preserve-3d;
+	perspective: 500px;
+	min-height: 100%;
+  height: 100%;
+}
+
+@mixin width($max){
+	@media (max-width: $max){
+		@content;
+	}
+}
+
+@keyframes matchAnim {
+	0% {
+		background: #bcffcc;
+	}
+	100% {
+		background: white;
+	}
+}
+
+.card {
+  float: left;
+  height: 120px;
+  width: 120px;
+  padding: 5px;
+  text-align: center;
+	display: block;
+	perspective: 500px;
+	position: relative;
+	cursor: pointer;
+  z-index: 50;
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+
+	.inside {
+		width: 100%;
+		height: 100%;
+		display: block;
+		transform-style: preserve-3d;
+		transition: .4s ease-in-out;
+		background: white;
+
+		&.picked, &.matched {
+			transform: rotateY(180deg);
+		}
+		&.matched {
+			animation: 1s matchAnim ease-in-out;
+			animation-delay: .4s;
+		}
+	}
+
+  .front, .back {
+  	backface-visibility: hidden;
+    border-radius: 4px;
+    box-shadow: 0 0 0px 3px rgba(0,0,0, 0.1);
+  	position: absolute;
+  	top: 0;
+  	left: 0;
+  	width: 100%;
+  	height: 100%;
+  	padding: 5px;
+    display: flex;
+    font-size: 13px;
+    color: #444;
+    font-weight: 600;
+    align-items: center;
+    justify-content: center;
+  }
+  .front {
+  	transform: rotateY(-180deg);
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .back {
+		transform: rotateX(0); // fix firefox backface-visibility.
+    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADEAAABdCAYAAAAMqo49AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAOgSURBVHgB7ZuNcdswDIWfvEDTDdQNvEGdCZoN4hG6QZwJkk5gZ4ImE1gbpJ2A2iDJBChhUlfHp/hE4UlU7vTd0fKvpGeAJMCfAkZE5MIfSl+W8a2y5Wt1LK96LIriFUQKJOJveuUP3xFuWp9fIJ0/CKKefKm8qBpDozfuy50vLzIMe1/WGIJ483sZD+fLjS8lrPiTXPiylXw4sVhGwr8/lNukspdUq/gfXMv0cL4sz913cSRAv/iM6bL2rdhD2wfHIhza2/gp0SpkoQ8SKlGJ6bOT0E+9YxGP1/g8bOWksh/cSWsPPhfay182Lwpiha4QwogaIUZSSoTwpAlTmFx6IdXhmYR+wcJzm5+eoi7gy0547I9PbhFxj0Ti9ZxwWOk5F+jPrTfnTyQSXUD9mRGOXx0epZ8lfsOI2N1YeWlOtpQ0nDCizHDtvdhZLrx5NUHpatoaoVWoweEBdpZNnfjV4cs1uAKUCnZC0y0hf3j+wFwalm8k5NJ0xB72b4uTE2ptX/nyxZc3hFz4kZ3Yn1zTGnhWyQMFbBgiLP0EC7ObZhUR65lVxFtuSzCCwnoWQeAH7FTIhYTQ3Iq2bFkr9g3sVMgFyQrKCrkQTlLkmvON7k7+4upGJezcNk9GDTsk5CEOdnSi5lvzYjRLRAF7cLhEDoQ3z7FBDiRMnDBguGJeAULK7VMFXAuPFcZG0kdRzpE8vsUQoD0ya8psg7GJApxw2GBsJIyaOOGwRg6EN228Rg6E05RqPWLPY3QWwAit8wmIIrZiw+UWYLWCkxw98YmIrfTHZRcAmLK0vHXgSIAltLgCCWtSVKIfO5+ZPYJEDhE1jvJjBlYRfQaD6Wv+cgyedZlaS8IqInUGqY4TnVTGFvEXA2AVkfqv0q2gWEXUSGN6IuKsapXwk0FmYRmt0xM+OxJS0q6DAoPESmZLRJfq2vbXmCrSbYAgeYHX6MjHQzWHtSEYEPr8RAyxNaZqNnwM0qzOzMzMzIwCpZ+QMACm2xc0Nipj0b6ixv/9dI+j7KdLJYYbd9IdxqIUHnJ+Geo5nExh6FLpKWA6QoQzocJaItFLAGutkrICgT5JEbNyUjZk9dnKzNyP9+qb3a8wkiRCwmLcFxDxIsx9Vao7DbJy38oU1oqbSRIRwwbmABglde1jCWbOnCf/9pV7LTxK5EJsIUfDFjkR+3omJwPtUUoVsuwpxMlUolglWiTFte4nYYE2JGzB3LUIcvE9vfkVZj7mH+UsR0oFFPKEAAAAAElFTkSuQmCC') no-repeat scroll 50% 50% / 25px auto #659EDD;
+    height: 100%;
+    width: 100%;
+    transition: all 0.18s ease-in-out 0s;
+    &:hover {
+      box-shadow: 0 0 0px 5px rgb(0 0 0 / 10%);
+      transform: scale(0.9);
+      z-index: 111;
+      position: relative;
+    }
+  }
+}
+
+.modal-overlay {
+	display: none;
+	background: rgba(0,0,0,.8);
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.modal {
+	display: none;
+	position: relative;
+	width: 500px;
+	height: 400px;
+	max-height: 90%;
+	max-width: 90%;
+	min-height: 380px;
+	margin: 0 auto;
+	background: white;
+	top: 50%;
+	transform: translateY(-50%);
+	padding: 30px 10px;
+
+	.winner {
+		font-size: 14px;
+		text-align: center;
+		font-family: "Anton", sans-serif;
+		color: #4d4d4d;
+		text-shadow: 0px 3px 0 black;
+	}
+	.restart {
+		font-family: "Anton", sans-serif;
+		margin: 30px auto;
+		padding: 20px 30px;
+		display: block;
+		font-size: 14px;
+		border: none;
+		background: #4d4d4d;
+		background: linear-gradient(#4d4d4d, #222);
+		border: 1px solid #222;
+		border-radius: 5px;
+		color: white;
+		text-shadow: 0px 1px 0 black;
+		cursor: pointer;
+		&:hover {
+			background: linear-gradient(#222, black);
+		}
+	}
+	.message {
+		text-align: center;
+		a {
+			text-decoration: none;
+			color: #28afe6;
+			font-weight: bold;
+			&:hover {
+				$c: lighten(#28afe6, 10%);
+				color: $c;
+				border-bottom: 1px dotted $c;
+			}
+		}
+	}
+}
