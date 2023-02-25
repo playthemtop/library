@@ -1,6 +1,4 @@
-import {
-  ValidateAccessKey, Actions, InitGames, Modal, Steps,
-} from 'components';
+import { ValidateAccessKey, Actions, InitGames, Modal, Steps } from 'components';
 import { FormSchema } from 'helpers/validation';
 
 import 'styles/main.scss';
@@ -33,19 +31,12 @@ class PTW {
     const activeGameData = await new Actions.init(this.accessKey, this.isPreview);
     if (activeGameData === 'error') return;
 
-    // console.log('---this.isPreview', this.isPreview);
-    // console.log('---this.data', this.data);
-    // console.log('---this.data', this.data);
-    // console.log('---activeGameData', activeGameData);
-
     this.activeGameData = {
       params: (this.isPreview && (this.data && this.data.params)) || activeGameData.params,
       game: (this.isPreview && (this.data && this.data.game)) || activeGameData.game,
     };
 
     this.elements = new InitGames(this.activeGameData, this.isPreview);
-
-    console.log('elements', this.elements);
 
     this.modal = new Modal(
       this.accessKey,
@@ -58,7 +49,9 @@ class PTW {
   };
 
   handleChange = () => {
-    const getPtwModalFormInputs = document.querySelectorAll('.PtwModalRootForm__input');
+    const { ptwModalForm } = this.elements.elements;
+    const getPtwModalFormInputs = ptwModalForm.querySelectorAll('.PtwModalRootForm__input');
+
     getPtwModalFormInputs.forEach(input => {
       input.addEventListener('input', event => {
         const { name, value } = event.target;
@@ -76,6 +69,7 @@ class PTW {
 
   handleStartGame = () => {
     const { ptwModalButtonStart, ptwModalForm } = this.elements.elements;
+
     ptwModalButtonStart.addEventListener('click', async (e) => {
       e.preventDefault();
       ptwModalForm.classList.remove('PtwModalRootForm_start');
@@ -96,24 +90,25 @@ class PTW {
           ptwModalForm.classList.remove('PtwModalRootForm_error');
         }, 800);
       }
-
     });
   }
 
   modalShowWithGeneralSettings = () => {
     const { params } = this.activeGameData;
-    const { display_game } = params.behavior.general_settings;
+    const { ptwWidget } = this.elements.elements;
+    const { display_game, trigger_button } = params.behavior.general_settings;
     const showModal = display_game.find(item => item.checked);
 
-    if (this.isPreview) {
-      this.modal.show();
-    } else {
-      this.modal[`showWith_${showModal.name}`](showModal.value);
-      new Actions.impr(this.accessKey);
-    }
+    if (this.isPreview) this.modal.show();
+    else this.modal[`showWith_${showModal.name}`](showModal.value);
 
-    this.handleChange();
     this.handleStartGame();
+    this.handleChange();
+
+    // Show trigger button after first show, if "trigger_button" is trues
+    if (localStorage.getItem('PTW_INTERVAL') && trigger_button) {
+      document.body.appendChild(ptwWidget);
+    }
   }
 
   nextStep = () => {

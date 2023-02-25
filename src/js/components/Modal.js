@@ -1,3 +1,6 @@
+import moment from 'moment';
+
+import { Actions } from 'components';
 import STORAGE from 'helpers/storage';
 
 class Modal {
@@ -11,7 +14,6 @@ class Modal {
 
     this.handleModalClose();
     this.handleModalOpen();
-    // this.showOnLeaving();
   }
 
   showWith_onEnter = () => {
@@ -24,60 +26,49 @@ class Modal {
       let documentHeight = Math.max(
         body.scrollHeight, html.scrollHeight, body.offsetHeight, html.offsetHeight, body.clientHeight, html.clientHeight,
       );
+
       documentHeight = documentHeight - document.body.clientHeight;
-
       const positionTop = documentHeight * (Number(num) / 100);
-
       let scrollTop = html.scrollTop || body && body.scrollTop || 0;
       scrollTop -= html.clientTop;
 
-      if (scrollTop >= Number(positionTop.toFixed())
-        && scrollTop <= Number(positionTop.toFixed()) + 10) {
-          console.log('')
-          const getPTW_onscroll = STORAGE.getItem('PTW_onscroll');
-          console.log('getPTW_onscroll', getPTW_onscroll);
-          if (!getPTW_onscroll) {
-            this.show();
-            STORAGE.setItem('PTW_onscroll', true);
-          }
+      const condition = scrollTop >= Number(positionTop.toFixed()) && scrollTop <= Number(positionTop.toFixed()) + 10;
+
+      if (condition) {
+        this.show();
       }
     });
   }
 
   showWith_time = (timeout) => {
-    console.log(timeout)
     setTimeout(() => {
       this.show();
     }, Number(timeout) * 1000);
   }
 
-  showOnLeaving = () => {
-    const isPtwShowStorage = STORAGE.getItem('PTW_isShow');
+  show = (action, isHandleModalOpen) => {
+    const { behavior: { general_settings: generalSettings } } = this.activeGameData.params;
+    const { ptwModalRoot, ptwWidget } = this.elements;
+    const currentDate = Date.parse(new Date) / 1000;
 
-    const { general_settings: generalSettings } = this.activeGameData.params.behavior;
-    if (generalSettings.show_on_leaving && !isPtwShowStorage) {
+    // Frequency of displaying a widget without a purchase by clicking on the TRIGGER button
+    const intervalStorage = STORAGE.getItem('PTW_INTERVAL');
 
-      document.addEventListener('mouseleave', (e) => {
-        e.preventDefault();
-        if (e.clientY < 10) {
-          this.show();
-        }
-      });
+    if (intervalStorage === null || (isHandleModalOpen || currentDate >= intervalStorage)) {
+      document.body.style.overflow = 'hidden';
+      document.body.appendChild(ptwModalRoot);
+
+      // MuiDialogContainer use in constructor admin panel
+      const MuiDialogContainer = document.querySelector('.MuiDialog-container');
+      if (MuiDialogContainer) MuiDialogContainer.removeAttribute('tabindex');
+
+      const nextDate = moment().add(generalSettings.interval, generalSettings.interval_unit).unix();
+      STORAGE.setItem('PTW_INTERVAL', nextDate);
+
+      new Actions.impr(this.accessKey);
+
+      this.initGame();
     }
-  }
-
-  show = () => {
-    const { ptwModalRoot } = this.elements;
-    document.body.style.overflow = 'hidden';
-    document.body.appendChild(ptwModalRoot);
-
-    // MuiDialogContainer use in constructor admin panel
-    const MuiDialogContainer = document.querySelector('.MuiDialog-container');
-    if (MuiDialogContainer) MuiDialogContainer.removeAttribute('tabindex');
-
-    STORAGE.setItem('PTW_isShow', true);
-    this.initGame();
-    // this.handleChange();
   }
 
   hide = () => {
@@ -106,9 +97,6 @@ class Modal {
         ptwModalForm.classList.remove('PtwModalRootForm_hide');
         ptwModalRoot.remove();
       }, 300);
-
-      STORAGE.setItem('PTW_onscroll', false);
-      STORAGE.setItem('PTW_isShow', false);
 
       const PTWJQueryScriptEl = document.querySelector('#PTWJQueryScript');
       if (PTWJQueryScriptEl) PTWJQueryScriptEl.remove();
@@ -142,7 +130,7 @@ class Modal {
   handleModalOpen = () => {
     const { ptwWidgetButton } = this.elements;
     ptwWidgetButton.addEventListener('click', () => {
-      this.show();
+      this.show(null, 'handleModalOpen');
       this.isOpenWidget();
     });
   }

@@ -110,7 +110,7 @@ const PARAMS_DEFAULT = {
           startText: 'On entering the site',
           endText: '',
           checked: true,
-          value: '',
+          value: 0,
         },
         {
           name: 'scroll',
@@ -130,13 +130,8 @@ const PARAMS_DEFAULT = {
       trigger_button: true,
       email_repeat: true,
       send_on_email: false,
-      // where_game_show: ['about'],
-      // show_count: 10,
-      // show_on_leaving: false,
-      // show_after_hit: {
-      //   checked: true,
-      //   value: ['5', 'days'],
-      // },
+      interval: 10, // 10 seconds
+      interval_unit: 'seconds', // development type seconds, days/hours production
     },
     trigger_button: {
       title: 'Get a gift',
@@ -153,7 +148,7 @@ window.PTW = PTW;
 // for localhost test
 if (process.env.NODE_ENV === 'development') {
   new PTW({
-    accessKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2M2FhMmU3MWE2MDliZTBjYjNjNTM3OTAiLCJkb21haW4iOiJsb2NhbGhvc3QiLCJ0eXBlIjoiYWNjZXNzS2V5IiwiaWF0IjoxNjcyMzMyOTczfQ.zCgM9tEBYna_lswZvnwf5sGBIfRt12XukLCgR1El-58',
+    accessKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2M2FhMmU3MWE2MDliZTBjYjNjNTM3OTAiLCJkb21haW4iOiJsb2NhbGhvc3QiLCJ0eXBlIjoiYWNjZXNzS2V5IiwiaWF0IjoxNjc3MzU2NTY1fQ.ZdYfTF73savsDvnhO6GCJd0sCnwiBxbdHer4tjTFkcA',
     data: {
       params: PARAMS_DEFAULT,
       game: 'remember', // roulette, scratch, remember

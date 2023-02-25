@@ -159,16 +159,21 @@
       }
     }
     &_scratch, &_remember {
-      border-radius: 2px;
+      border-radius: 4px;
+      box-shadow: 0px 0px 0px 3px rgb(0 0 0 / 10%);
       bottom: 10px;
       font-size: 14px;
       margin-left: -75px;
       max-width: 150px;
       height: 40px;
       width: 100%;
+      &:active {
+        box-shadow: 0px 0px 15px 3px rgb(0 0 0 / 20%);
+        transform: scale(0.95);
+      }
       & span {
         pointer-events: none;
-        margin-top: -2px;
+        margin-top: -1px;
         display: flex;
         top: 0;
         align-items: center;

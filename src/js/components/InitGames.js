@@ -488,7 +488,7 @@ class InitGames {
       }
     };
 
-    console.log('params2', params);
+    // console.log('params2', params);
 
     if (params) {
       script.onload = () => {
