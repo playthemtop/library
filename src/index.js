@@ -109,15 +109,17 @@ const PARAMS_DEFAULT = {
           name: 'onEnter',
           startText: 'On entering the site',
           endText: '',
-          checked: true,
-          value: 0,
+          checked: false,
+          value: '',
+          maxValue: 0,
         },
         {
           name: 'scroll',
           startText: 'User scrolls',
           endText: '% of the page',
-          checked: false,
-          value: 50,
+          checked: true,
+          value: 70,
+          maxValue: 100,
         },
         {
           name: 'time',
@@ -125,13 +127,14 @@ const PARAMS_DEFAULT = {
           endText: 'sec',
           checked: false,
           value: 3000,
+          maxValue: 60,
         },
       ],
+      interval: '4',
+      interval_unit: 'hours',
       trigger_button: true,
       email_repeat: true,
       send_on_email: false,
-      interval: 10, // 10 seconds
-      interval_unit: 'seconds', // development type seconds, days/hours production
     },
     trigger_button: {
       title: 'Get a gift',
@@ -151,9 +154,10 @@ if (process.env.NODE_ENV === 'development') {
     accessKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2M2FhMmU3MWE2MDliZTBjYjNjNTM3OTAiLCJkb21haW4iOiJsb2NhbGhvc3QiLCJ0eXBlIjoiYWNjZXNzS2V5IiwiaWF0IjoxNjc3MzU2NTY1fQ.ZdYfTF73savsDvnhO6GCJd0sCnwiBxbdHer4tjTFkcA',
     data: {
       params: PARAMS_DEFAULT,
-      game: 'remember', // roulette, scratch, remember
+      game: 'roulette', // roulette, scratch, remember
     },
     isPreview: false,
+    isTrigger: true,
   });
 }
 

@@ -4,10 +4,11 @@ import { Actions } from 'components';
 import STORAGE from 'helpers/storage';
 
 class Modal {
-  constructor(accessKey, elements, isPreview, activeGameData, handleChange) {
+  constructor(accessKey, elements, isPreview, isTrigger, activeGameData, handleChange) {
     this.initGame = elements[activeGameData.game];
     this.elements = elements.view();
     this.isPreview = isPreview;
+    this.isTrigger = isTrigger;
     this.activeGameData = activeGameData;
     this.accessKey = accessKey;
     this.handleChange = handleChange;
@@ -46,7 +47,7 @@ class Modal {
     }, Number(timeout) * 1000);
   }
 
-  show = (action, isHandleModalOpen) => {
+  show = isHandleModalOpen => {
     const { behavior: { general_settings: generalSettings } } = this.activeGameData.params;
     const { ptwModalRoot, ptwWidget } = this.elements;
     const currentDate = Date.parse(new Date) / 1000;
@@ -62,12 +63,29 @@ class Modal {
       const MuiDialogContainer = document.querySelector('.MuiDialog-container');
       if (MuiDialogContainer) MuiDialogContainer.removeAttribute('tabindex');
 
-      const nextDate = moment().add(generalSettings.interval, generalSettings.interval_unit).unix();
-      STORAGE.setItem('PTW_INTERVAL', nextDate);
+      const displayIntervalWhenTesting = (intervalValue, intervalUnit) => {
+        if (!this.isPreview) {
+          return { intervalValue, intervalUnit };
+        } else {
+          return { intervalValue: 10, intervalUnit: 'seconds' }; // intervalValue - this value can also be changed here
+        }
+      }
 
-      new Actions.impr(this.accessKey);
+      const { interval, interval_unit } = generalSettings;
+      const { intervalValue, intervalUnit } = displayIntervalWhenTesting(interval, interval_unit);
+
+      if (this.isTrigger) {
+        const nextDate = moment().add(intervalValue, intervalUnit).unix();
+        STORAGE.setItem('PTW_INTERVAL', nextDate);
+      }
+
+
+      if (!this.isPreview) {
+        new Actions.impr(this.accessKey);
+      }
 
       this.initGame();
+      this.isOpenWidget();
     }
   }
 
@@ -88,7 +106,7 @@ class Modal {
       }, 250);
 
       setTimeout(() => {
-        if (generalSettings.trigger_button && !this.isPreview) {
+        if (generalSettings.trigger_button && this.isTrigger) {
           document.body.appendChild(ptwWidget);
         }
 
@@ -130,7 +148,7 @@ class Modal {
   handleModalOpen = () => {
     const { ptwWidgetButton } = this.elements;
     ptwWidgetButton.addEventListener('click', () => {
-      this.show(null, 'handleModalOpen');
+      this.show('handleModalOpen');
       this.isOpenWidget();
     });
   }

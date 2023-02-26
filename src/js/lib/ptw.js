@@ -8,10 +8,11 @@ window.emailToGlobal = '';
 window.accessKeyGlobal = '';
 
 class PTW {
-  constructor({ accessKey, data, isPreview }) {
+  constructor({ accessKey, data, isPreview, isTrigger }) {
     // get init params
     this.accessKey = accessKey;
     this.isPreview = isPreview;
+    this.isTrigger = isTrigger;
     this.data = data;
 
     // modal window elements
@@ -42,6 +43,7 @@ class PTW {
       this.accessKey,
       this.elements,
       this.isPreview,
+      this.isTrigger,
       this.activeGameData,
     );
 
@@ -99,14 +101,17 @@ class PTW {
     const { display_game, trigger_button } = params.behavior.general_settings;
     const showModal = display_game.find(item => item.checked);
 
-    if (this.isPreview) this.modal.show();
-    else this.modal[`showWith_${showModal.name}`](showModal.value);
+    if (this.isPreview) {
+      this.modal.show();
+    } else {
+      this.modal[`showWith_${showModal.name}`](showModal.value);
+    }
 
     this.handleStartGame();
     this.handleChange();
 
     // Show trigger button after first show, if "trigger_button" is trues
-    if (localStorage.getItem('PTW_INTERVAL') && trigger_button) {
+    if (localStorage.getItem('PTW_INTERVAL') && this.isTrigger && trigger_button) {
       document.body.appendChild(ptwWidget);
     }
   }
