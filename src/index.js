@@ -151,7 +151,7 @@ window.PTW = PTW;
 // for localhost test
 if (process.env.NODE_ENV === 'development') {
   new PTW({
-    accessKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2M2FhMmU3MWE2MDliZTBjYjNjNTM3OTAiLCJkb21haW4iOiJsb2NhbGhvc3QiLCJ0eXBlIjoiYWNjZXNzS2V5IiwiaWF0IjoxNjc3MzU2NTY1fQ.ZdYfTF73savsDvnhO6GCJd0sCnwiBxbdHer4tjTFkcA',
+    accessKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjllYTFkY2RjNzM3ODRhOTE0NDJlMGQiLCJkb21haW4iOiJsb2NhbGhvc3QiLCJ0eXBlIjoiYWNjZXNzS2V5IiwiaWF0IjoxNzIxNjc4MzAwfQ.H6WB0Ny2wOiRxhH0lVjtD8hA-l9lgZde29Q7ra9wCfs',
     data: {
       params: PARAMS_DEFAULT,
       game: 'roulette', // roulette, scratch, remember

@@ -34,6 +34,7 @@ module.exports = (env, options) => {
       hints: false,
     },
     module: {
+      unsafeCache: true,
       rules: [
         {
           test: /\.js?$/,
