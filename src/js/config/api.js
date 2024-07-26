@@ -1,6 +1,6 @@
 const API = {
-  // baseUrl: 'https://api.playthem.top',
-  baseUrl: 'http://localhost:5005',
+  baseUrl: 'https://api.playthem.top',
+  // baseUrl: 'http://localhost:5005',
   game: {
     spin: '/uploads/games/roulette/Spin2WinWheel.js',
   },
