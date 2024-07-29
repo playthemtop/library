@@ -145,6 +145,8 @@ const PARAMS_DEFAULT = {
   },
 };
 
+window.PTW = PTW;
+
 const indexedDBInit = async () => {
   window.STORAGE = new indexedDB();
   await STORAGE.init();
@@ -152,15 +154,14 @@ const indexedDBInit = async () => {
 
 await indexedDBInit();
 
-window.PTW = PTW;
 
 // for localhost test
 if (process.env.NODE_ENV === 'development') {
   new PTW({
-    accessKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjllYTFkY2RjNzM3ODRhOTE0NDJlMGQiLCJkb21haW4iOiJsb2NhbGhvc3QiLCJ0eXBlIjoiYWNjZXNzS2V5IiwiaWF0IjoxNzIyMTYyNTI5fQ.CcC1vL1dj20jyTk-QbpgmdKhmS2MoC9qOYay_hvm4g8',
+    accessKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjlmNGY3N2FhNjliNzg0NTY5MGEwNDIiLCJkb21haW4iOiJsb2NhbGhvc3QiLCJ0eXBlIjoiYWNjZXNzS2V5IiwiaWF0IjoxNzIyMjU1ODE2fQ.h1dCKL9-Txf1rPt0TPgpF5oEjC0iqSakf30rYJYefho',
     data: {
       params: PARAMS_DEFAULT,
-      // game: 'remember', // roulette, scratch, remember
+      game: 'remember', // roulette, scratch, remember
     },
     isPreview: false,
     isTrigger: true,

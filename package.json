@@ -12,7 +12,7 @@
   "private": true,
   "scripts": {
     "start": "webpack-dev-server --mode development --open --progress",
-    "build:local": "webpack --mode production --progress && scp -r build/playthem-widget.min.js ~/playthem/backend/uploads/games && cd ~/playthem/backend && npm run dev",
+    "build:local": "webpack --mode production --progress && scp -r build/playthem-widget.min.js ~/playthem/backend/uploads/games",
     "build": "webpack --mode production --progress && scp -r build/playthem-widget.min.js /var/www/backend/uploads/games && pm2 restart backend"
   },
   "browserslist": [
@@ -26,6 +26,7 @@
     "@babel/plugin-transform-runtime": "^7.19.1",
     "@babel/preset-env": "^7.19.1",
     "@babel/runtime": "^7.19.0",
+    "corejs": "^1.0.0",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.29.4"
   },
