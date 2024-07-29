@@ -1,7 +1,6 @@
 import moment from 'moment';
 
 import { Actions } from 'components';
-import STORAGE from 'helpers/storage';
 
 class Modal {
   constructor(accessKey, elements, isPreview, isTrigger, activeGameData, handleChange) {
@@ -47,13 +46,13 @@ class Modal {
     }, Number(timeout) * 1000);
   }
 
-  show = isHandleModalOpen => {
+  show = async isHandleModalOpen => {
     const { behavior: { general_settings: generalSettings } } = this.activeGameData.params;
     const { ptwModalRoot, ptwWidget } = this.elements;
     const currentDate = Date.parse(new Date) / 1000;
 
     // Frequency of displaying a widget without a purchase by clicking on the TRIGGER button
-    const intervalStorage = STORAGE.getItem('PTW_INTERVAL');
+    const intervalStorage = await STORAGE.getItem('PTW_INTERVAL');
 
     if (intervalStorage === null || (isHandleModalOpen || currentDate >= intervalStorage)) {
       document.body.style.overflow = 'hidden';
@@ -76,7 +75,7 @@ class Modal {
 
       if (this.isTrigger) {
         const nextDate = moment().add(intervalValue, intervalUnit).unix();
-        STORAGE.setItem('PTW_INTERVAL', nextDate);
+        await STORAGE.setItem('PTW_INTERVAL', nextDate);
       }
 
 

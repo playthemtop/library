@@ -95,7 +95,7 @@ class PTW {
     });
   }
 
-  modalShowWithGeneralSettings = () => {
+  modalShowWithGeneralSettings = async () => {
     const { params } = this.activeGameData;
     const { ptwWidget } = this.elements.elements;
     const { display_game, trigger_button } = params.behavior.general_settings;
@@ -110,8 +110,10 @@ class PTW {
     this.handleStartGame();
     this.handleChange();
 
+    const isIntervalStorage = await STORAGE.getItem('PTW_INTERVAL');
+
     // Show trigger button after first show, if "trigger_button" is trues
-    if (localStorage.getItem('PTW_INTERVAL') && this.isTrigger && trigger_button) {
+    if (isIntervalStorage && this.isTrigger && trigger_button) {
       document.body.appendChild(ptwWidget);
     }
   }
