@@ -92,18 +92,13 @@ module.exports = (env, options) => {
     },
     optimization: {
       // concatenateModules: false,
-      minimize: false,
+      minimize: true,
       minimizer: [
         new CssMinimizerPlugin(),
         new TerserPlugin({
           terserOptions: {
             mangle: {
               reserved: ['PTW', 'PTW_STORAGE'],
-              keep_fnames: true,
-              keep_classnames: true,
-            },
-            output: {
-              comments: false, // удаляет комментарии
             },
           },
         }),
