@@ -144,6 +144,8 @@ const PARAMS_DEFAULT = {
   },
 };
 
+window.PTW = PTW;
+
 // for localhost test
 if (process.env.NODE_ENV === 'development') {
   new PTW({
@@ -156,5 +158,3 @@ if (process.env.NODE_ENV === 'development') {
     isTrigger: true,
   });
 }
-
-export default PTW;

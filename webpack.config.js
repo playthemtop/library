@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
+const TerserPlugin = require('terser-webpack-plugin');
 
 const settings = {
   distPath: path.join(__dirname, 'build'),
@@ -91,8 +92,22 @@ module.exports = (env, options) => {
     },
     optimization: {
       // concatenateModules: false,
-      minimize: true,
-      minimizer: [new CssMinimizerPlugin(), '...'],
+      minimize: false,
+      minimizer: [
+        new CssMinimizerPlugin(),
+        new TerserPlugin({
+          terserOptions: {
+            mangle: {
+              reserved: ['PTW', 'PTW_STORAGE'],
+              keep_fnames: true,
+              keep_classnames: true,
+            },
+            output: {
+              comments: false, // удаляет комментарии
+            },
+          },
+        }),
+      ],
     },
     plugins: [
       new NodePolyfillPlugin(),
@@ -104,8 +119,5 @@ module.exports = (env, options) => {
         favicon: srcPathExtend('favicon.ico'),
       }),
     ],
-    experiments: {
-      topLevelAwait: true,
-    },
   };
 };
