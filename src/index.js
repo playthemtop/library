@@ -1,5 +1,4 @@
 import { PTW } from 'lib';
-import indexedDB from 'helpers/storage';
 
 import API from 'config/api';
 
@@ -145,20 +144,10 @@ const PARAMS_DEFAULT = {
   },
 };
 
-window.PTW = PTW;
-
-const indexedDBInit = async () => {
-  window.STORAGE = new indexedDB();
-  await STORAGE.init();
-};
-
-await indexedDBInit();
-
-
 // for localhost test
 if (process.env.NODE_ENV === 'development') {
   new PTW({
-    accessKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjlmNGY3N2FhNjliNzg0NTY5MGEwNDIiLCJkb21haW4iOiJsb2NhbGhvc3QiLCJ0eXBlIjoiYWNjZXNzS2V5IiwiaWF0IjoxNzIyMjU1ODE2fQ.h1dCKL9-Txf1rPt0TPgpF5oEjC0iqSakf30rYJYefho',
+    accessKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjllYTFkY2RjNzM3ODRhOTE0NDJlMGQiLCJkb21haW4iOiJsb2NhbGhvc3QiLCJ0eXBlIjoiYWNjZXNzS2V5IiwiaWF0IjoxNzIyMjcxMTc2fQ.4uzQD1barLApY8JRg6dhGraDPv8YAnAwfSajZxxU4qA',
     data: {
       params: PARAMS_DEFAULT,
       game: 'remember', // roulette, scratch, remember

@@ -52,7 +52,7 @@ class Modal {
     const currentDate = Date.parse(new Date) / 1000;
 
     // Frequency of displaying a widget without a purchase by clicking on the TRIGGER button
-    const intervalStorage = await STORAGE.getItem('PTW_INTERVAL');
+    const intervalStorage = window.PTW_STORAGE.getItem('PTW_INTERVAL');
 
     if (intervalStorage === null || (isHandleModalOpen || currentDate >= intervalStorage)) {
       document.body.style.overflow = 'hidden';
@@ -75,9 +75,8 @@ class Modal {
 
       if (this.isTrigger) {
         const nextDate = moment().add(intervalValue, intervalUnit).unix();
-        await STORAGE.setItem('PTW_INTERVAL', nextDate);
+        await window.PTW_STORAGE.setItem('PTW_INTERVAL', nextDate);
       }
-
 
       if (!this.isPreview) {
         new Actions.impr(this.accessKey);

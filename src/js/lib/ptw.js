@@ -1,5 +1,6 @@
 import { ValidateAccessKey, Actions, InitGames, Modal, Steps } from 'components';
 import { FormSchema } from 'helpers/validation';
+import createStorage from 'helpers/storage';
 
 import 'styles/main.scss';
 
@@ -23,12 +24,15 @@ class PTW {
     // isValidate userId and domain name
     this.accessKeyDecode = new ValidateAccessKey(accessKey, isPreview);
     this.activeGameData = {};
-    this.init();
 
+    window.PTW_STORAGE = createStorage();
     window.accessKeyGlobal = this.accessKey;
+    this.init();
   };
 
   init = async () => {
+    await window.PTW_STORAGE.init();
+
     const activeGameData = await new Actions.init(this.accessKey, this.isPreview);
     if (activeGameData === 'error') return;
 
@@ -45,6 +49,7 @@ class PTW {
       this.isPreview,
       this.isTrigger,
       this.activeGameData,
+      this.STORAGE,
     );
 
     this.modalShowWithGeneralSettings();
@@ -110,7 +115,7 @@ class PTW {
     this.handleStartGame();
     this.handleChange();
 
-    const isIntervalStorage = await STORAGE.getItem('PTW_INTERVAL');
+    const isIntervalStorage = window.PTW_STORAGE.getItem('PTW_INTERVAL');
 
     // Show trigger button after first show, if "trigger_button" is trues
     if (isIntervalStorage && this.isTrigger && trigger_button) {

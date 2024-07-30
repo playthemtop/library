@@ -1,127 +1,108 @@
-// class STORAGE {
-//   static setItem = (key, value) => localStorage.setItem(key, JSON.stringify(value));
+const createStorage = () => {
+  const dbName = 'PLAYTHEM_WIDGET_DB';
+  const storeName = 'PLAYTHEM_WIDGET_STORE';
+  const dbVersion = 1;
+  let db = null;
 
-//   static getItem = key => JSON.parse(localStorage.getItem(key));
-
-//   static isItem = key =>
-//     JSON.parse(localStorage.getItem(key)) === null ||
-//     JSON.parse(localStorage.getItem(key)) === '' ||
-//     localStorage.getItem(key) === undefined;
-
-//   static removeItem = key => localStorage.removeItem(key);
-
-//   static clear = () => localStorage.clear();
-// }
-
-// export default STORAGE;
-
-
-class STORAGE {
-  constructor() {
-    this.dbName = 'PLAYTHEM_WIDGET_DB';
-    this.storeName = 'PLAYTHEM_WIDGET_STORE';
-    this.dbVersion = 1;
-    this.db = null;
-
-    this.init();
-  }
-
-  async init() {
-    return new Promise((resolve, reject) => {
-      const request = indexedDB.open(this.dbName, this.dbVersion);
+  const init = async () => {
+    try {
+      const request = indexedDB.open(dbName, dbVersion);
 
       request.onupgradeneeded = (event) => {
         const db = event.target.result;
-        if (!db.objectStoreNames.contains(this.storeName)) {
-          db.createObjectStore(this.storeName);
+        if (!db.objectStoreNames.contains(storeName)) {
+          db.createObjectStore(storeName);
         }
       };
 
-      request.onsuccess = (event) => {
-        this.db = event.target.result;
-        resolve();
-      };
+      db = await new Promise((resolve, reject) => {
+        request.onsuccess = (event) => resolve(event.target.result);
+        request.onerror = (event) => reject(event.target.error);
+      });
+    } catch (error) {
+      console.error('IndexedDB error:', error);
+      throw error;
+    }
+  };
 
-      request.onerror = (event) => {
-        console.error('IndexedDB error:', event.target.error);
-        reject(event.target.error);
-      };
-    });
-  }
+  const setItem = async (key, value) => {
+    try {
+      await new Promise((resolve, reject) => {
+        const transaction = db.transaction(storeName, 'readwrite');
+        const store = transaction.objectStore(storeName);
+        const request = store.put(JSON.stringify(value), key);
 
-  async setItem(key, value) {
-    return new Promise((resolve, reject) => {
-      const transaction = this.db.transaction(this.storeName, 'readwrite');
-      const store = transaction.objectStore(this.storeName);
-      const request = store.put(JSON.stringify(value), key);
+        request.onsuccess = () => resolve();
+        request.onerror = (event) => reject(event.target.error);
+      });
+    } catch (error) {
+      console.error('Error setting item:', error);
+      throw error;
+    }
+  };
 
-      request.onsuccess = () => {
-        resolve();
-      };
+  const getItem = async (key) => {
+      const result = await new Promise((resolve, reject) => {
+        const transaction = db.transaction(storeName, 'readonly');
+        const store = transaction.objectStore(storeName);
+        const request = store.get(key);
 
-      request.onerror = (event) => {
-        console.error('Error setting item:', event.target.error);
-        reject(event.target.error);
-      };
-    });
-  }
+        request.onsuccess = (event) => resolve(event.target.result ? JSON.parse(event.target.result) : null);
+        request.onerror = (event) => reject(event.target.error);
+      });
+      return result;
+  };
 
-  async getItem(key) {
-    return new Promise((resolve, reject) => {
-      const transaction = this.db.transaction(this.storeName, 'readonly');
-      const store = transaction.objectStore(this.storeName);
-      const request = store.get(key);
+  const isItem = async (key) => {
+    try {
+      const item = await getItem(key);
+      return item === null || item === '';
+    } catch (error) {
+      console.error('Error checking item:', error);
+      throw error;
+    }
+  };
 
-      request.onsuccess = (event) => {
-        const result = event.target.result;
-        resolve(result ? JSON.parse(result) : null);
-      };
+  const removeItem = async (key) => {
+    try {
+      await new Promise((resolve, reject) => {
+        const transaction = db.transaction(storeName, 'readwrite');
+        const store = transaction.objectStore(storeName);
+        const request = store.delete(key);
 
-      request.onerror = (event) => {
-        console.error('Error getting item:', event.target.error);
-        reject(event.target.error);
-      };
-    });
-  }
+        request.onsuccess = () => resolve();
+        request.onerror = (event) => reject(event.target.error);
+      });
+    } catch (error) {
+      console.error('Error removing item:', error);
+      throw error;
+    }
+  };
 
-  async isItem(key) {
-    const item = await this.getItem(key);
-    return item === null || item === '';
-  }
+  const clear = async () => {
+    try {
+      await new Promise((resolve, reject) => {
+        const transaction = db.transaction(storeName, 'readwrite');
+        const store = transaction.objectStore(storeName);
+        const request = store.clear();
 
-  async removeItem(key) {
-    return new Promise((resolve, reject) => {
-      const transaction = this.db.transaction(this.storeName, 'readwrite');
-      const store = transaction.objectStore(this.storeName);
-      const request = store.delete(key);
+        request.onsuccess = () => resolve();
+        request.onerror = (event) => reject(event.target.error);
+      });
+    } catch (error) {
+      console.error('Error clearing store:', error);
+      throw error;
+    }
+  };
 
-      request.onsuccess = () => {
-        resolve();
-      };
+  return {
+    init,
+    setItem,
+    getItem,
+    isItem,
+    removeItem,
+    clear
+  };
+};
 
-      request.onerror = (event) => {
-        console.error('Error removing item:', event.target.error);
-        reject(event.target.error);
-      };
-    });
-  }
-
-  async clear() {
-    return new Promise((resolve, reject) => {
-      const transaction = this.db.transaction(this.storeName, 'readwrite');
-      const store = transaction.objectStore(this.storeName);
-      const request = store.clear();
-
-      request.onsuccess = () => {
-        resolve();
-      };
-
-      request.onerror = (event) => {
-        console.error('Error clearing store:', event.target.error);
-        reject(event.target.error);
-      };
-    });
-  }
-}
-
-export default STORAGE;
+export default createStorage;
