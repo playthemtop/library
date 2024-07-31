@@ -3,24 +3,26 @@ import moment from 'moment';
 import { Actions } from 'components';
 
 class Modal {
-  constructor(accessKey, elements, isPreview, isTrigger, activeGameData, handleChange) {
+  constructor(accessKey, elements, isPreview, activeGameData, handleChange, PTW_STORAGE) {
     this.initGame = elements[activeGameData.game];
     this.elements = elements.view();
     this.isPreview = isPreview;
-    this.isTrigger = isTrigger;
     this.activeGameData = activeGameData;
     this.accessKey = accessKey;
     this.handleChange = handleChange;
+    this.PTW_STORAGE = PTW_STORAGE;
 
     this.handleModalClose();
     this.handleModalOpen();
   }
 
   showWith_onEnter = () => {
+    console.log('-on-enter');
     this.show();
   }
 
   showWith_scroll = num => {
+    console.log('-on-scroll');
     window.addEventListener('scroll', () => {
       const body = document.body, html = document.documentElement;
       let documentHeight = Math.max(
@@ -41,18 +43,23 @@ class Modal {
   }
 
   showWith_time = (timeout) => {
+    console.log('-on-time');
     setTimeout(() => {
       this.show();
     }, Number(timeout) * 1000);
   }
 
   show = async isHandleModalOpen => {
+    console.log('-on-show');
     const { behavior: { general_settings: generalSettings } } = this.activeGameData.params;
     const { ptwModalRoot, ptwWidget } = this.elements;
     const currentDate = Date.parse(new Date) / 1000;
 
     // Frequency of displaying a widget without a purchase by clicking on the TRIGGER button
-    const intervalStorage = window.PTW_STORAGE.getItem('PTW_INTERVAL');
+    const intervalStorage = await this.PTW_STORAGE.getItem('PTW_INTERVAL');
+
+    console.log('modal:intervalStorage', intervalStorage);
+    console.log('modal:intervalStorage-typeof', typeof intervalStorage);
 
     if (intervalStorage === null || (isHandleModalOpen || currentDate >= intervalStorage)) {
       document.body.style.overflow = 'hidden';
@@ -73,13 +80,10 @@ class Modal {
       const { interval, interval_unit } = generalSettings;
       const { intervalValue, intervalUnit } = displayIntervalWhenTesting(interval, interval_unit);
 
-      if (this.isTrigger) {
-        const nextDate = moment().add(intervalValue, intervalUnit).unix();
-        await window.PTW_STORAGE.setItem('PTW_INTERVAL', nextDate);
-      }
-
       if (!this.isPreview) {
         new Actions.impr(this.accessKey);
+        const nextDate = moment().add(intervalValue, intervalUnit).unix();
+        await this.PTW_STORAGE.setItem('PTW_INTERVAL', nextDate);
       }
 
       this.initGame();
@@ -104,7 +108,7 @@ class Modal {
       }, 250);
 
       setTimeout(() => {
-        if (generalSettings.trigger_button && this.isTrigger) {
+        if (generalSettings.trigger_button) {
           document.body.appendChild(ptwWidget);
         }
 

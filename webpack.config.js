@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
-const TerserPlugin = require('terser-webpack-plugin');
+// const TerserPlugin = require('terser-webpack-plugin');
 
 const settings = {
   distPath: path.join(__dirname, 'build'),
@@ -92,20 +92,13 @@ module.exports = (env, options) => {
     },
     optimization: {
       // concatenateModules: false,
-      minimize: true,
+      minimize: false,
       minimizer: [
         new CssMinimizerPlugin(),
-        new TerserPlugin({
-          terserOptions: {
-            mangle: {
-              reserved: ['PTW', 'PTW_STORAGE'],
-            },
-          },
-        }),
+        '...',
       ],
     },
     plugins: [
-      new NodePolyfillPlugin(),
       new CleanWebpackPlugin({
         verbose: true,
       }),
@@ -113,6 +106,7 @@ module.exports = (env, options) => {
         template: srcPathExtend('index.html'),
         favicon: srcPathExtend('favicon.ico'),
       }),
+      new NodePolyfillPlugin(),
     ],
   };
 };

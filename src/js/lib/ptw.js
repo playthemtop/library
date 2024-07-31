@@ -9,11 +9,10 @@ window.emailToGlobal = '';
 window.accessKeyGlobal = '';
 
 class PTW {
-  constructor({ accessKey, data, isPreview, isTrigger }) {
+  constructor({ accessKey, data, isPreview }) {
     // get init params
     this.accessKey = accessKey;
     this.isPreview = isPreview;
-    this.isTrigger = isTrigger;
     this.data = data;
 
     // modal window elements
@@ -24,14 +23,14 @@ class PTW {
     // isValidate userId and domain name
     this.accessKeyDecode = new ValidateAccessKey(accessKey, isPreview);
     this.activeGameData = {};
+    this.PTW_STORAGE = createStorage();
 
-    window.PTW_STORAGE = createStorage();
     window.accessKeyGlobal = this.accessKey;
     this.init();
   };
 
   init = async () => {
-    await window.PTW_STORAGE.init();
+    await this.PTW_STORAGE.init();
 
     const activeGameData = await new Actions.init(this.accessKey, this.isPreview);
     if (activeGameData === 'error') return;
@@ -47,9 +46,9 @@ class PTW {
       this.accessKey,
       this.elements,
       this.isPreview,
-      this.isTrigger,
       this.activeGameData,
-      this.STORAGE,
+      null,
+      this.PTW_STORAGE,
     );
 
     this.modalShowWithGeneralSettings();
@@ -115,10 +114,12 @@ class PTW {
     this.handleStartGame();
     this.handleChange();
 
-    const isIntervalStorage = window.PTW_STORAGE.getItem('PTW_INTERVAL');
+    const isIntervalStorage = await this.PTW_STORAGE.getItem('PTW_INTERVAL');
+
+    console.log('ptw: isIntervalStorage', isIntervalStorage);
 
     // Show trigger button after first show, if "trigger_button" is trues
-    if (isIntervalStorage && this.isTrigger && trigger_button) {
+    if (isIntervalStorage && trigger_button) {
       document.body.appendChild(ptwWidget);
     }
   }
