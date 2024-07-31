@@ -330,8 +330,8 @@ class InitGames {
     let Memory = {
       init: function(cards){
         this.$game = $(".ptwGame");
-        this.$modal = $(".modal");
-        this.$overlay = $(".modal-overlay");
+        this.$modal = $(".ptw-modal");
+        this.$overlay = $(".ptw-modal-overlay");
         this.$restartButton = $("button.restart");
         this.cardsArray = $.merge(cards, cards);
         this.shuffleCards(this.cardsArray);
@@ -361,8 +361,8 @@ class InitGames {
         let _ = Memory;
         let $card = $(this);
 
-        if(!_.paused && !$card.find(".inside").hasClass("matched") && !$card.find(".inside").hasClass("picked")){
-          $card.find(".inside").addClass("picked");
+        if(!_.paused && !$card.find(".ptwInside").hasClass("matched") && !$card.find(".ptwInside").hasClass("picked")){
+          $card.find(".ptwInside").addClass("picked");
           count += 1;
 
           if(!_.guess) {
@@ -478,9 +478,9 @@ class InitGames {
       buildHTML: function() {
         let frag = '';
         this.$cards.each(function(k, v){
-          frag += `<div class="card" data-id="${v.id}"><div class="inside">
-            <div class="front">${v.value}</div>
-              <div class="back" style="background-color: ${params.game_style.color_scheme.bg_wheel}"></div>
+          frag += `<div class="ptwCard" data-id="${v.id}"><div class="ptwInside">
+            <div class="ptwFront">${v.value}</div>
+              <div class="ptwBack" style="background-color: ${params.game_style.color_scheme.bg_wheel}"></div>
             </div>
           </div>`;
         });
