@@ -313,8 +313,8 @@ class InitGames {
     };
 
     const template = `
-    <div class="wrap">
-      <div class="game"></div>
+    <div class="ptwWrap">
+      <div class="ptwGame"></div>
     </div>
     `;
 
@@ -329,7 +329,7 @@ class InitGames {
 
     let Memory = {
       init: function(cards){
-        this.$game = $(".game");
+        this.$game = $(".ptwGame");
         this.$modal = $(".modal");
         this.$overlay = $(".modal-overlay");
         this.$restartButton = $("button.restart");
@@ -345,7 +345,7 @@ class InitGames {
       setup: function(){
         this.html = this.buildHTML();
         this.$game.html(this.html);
-        this.$memoryCards = $(".card");
+        this.$memoryCards = $(".ptwCard");
         this.paused = false;
         this.guess = null;
         this.binding();
@@ -388,7 +388,7 @@ class InitGames {
       },
 
       gameOver: function() {
-        const wrapEl = document.querySelector('.wrap');
+        const wrapEl = document.querySelector('.ptwWrap');
         let timer2 = 3;
 
         this.paused = true;
