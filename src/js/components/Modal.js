@@ -17,12 +17,10 @@ class Modal {
   }
 
   showWith_onEnter = () => {
-    console.log('-on-enter');
     this.show();
   }
 
   showWith_scroll = num => {
-    console.log('-on-scroll');
     window.addEventListener('scroll', () => {
       const body = document.body, html = document.documentElement;
       let documentHeight = Math.max(
@@ -43,23 +41,18 @@ class Modal {
   }
 
   showWith_time = (timeout) => {
-    console.log('-on-time');
     setTimeout(() => {
       this.show();
     }, Number(timeout) * 1000);
   }
 
   show = async isHandleModalOpen => {
-    console.log('-on-show');
     const { behavior: { general_settings: generalSettings } } = this.activeGameData.params;
     const { ptwModalRoot, ptwWidget } = this.elements;
     const currentDate = Date.parse(new Date) / 1000;
 
     // Frequency of displaying a widget without a purchase by clicking on the TRIGGER button
     const intervalStorage = await this.PTW_STORAGE.getItem('PTW_INTERVAL');
-
-    console.log('modal:intervalStorage', intervalStorage);
-    console.log('modal:intervalStorage-typeof', typeof intervalStorage);
 
     if (intervalStorage === null || (isHandleModalOpen || currentDate >= intervalStorage)) {
       document.body.style.overflow = 'hidden';
@@ -108,7 +101,7 @@ class Modal {
       }, 250);
 
       setTimeout(() => {
-        if (generalSettings.trigger_button) {
+        if (generalSettings.trigger_button && !this.isPreview) {
           document.body.appendChild(ptwWidget);
         }
 
@@ -160,7 +153,7 @@ class Modal {
       ptwWidgetButton.classList.add('PtwWidget__button_hide');
       setTimeout(() => {
         ptwWidgetButton.classList.remove('PtwWidget__button_hide');
-        ptwWidget.remove();
+        if (ptwWidget) ptwWidget.remove();
       }, 200);
   }
 
