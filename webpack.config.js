@@ -3,9 +3,11 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
+const Dotenv = require('dotenv-webpack');
 // const TerserPlugin = require('terser-webpack-plugin');
 
 const settings = {
+  root: path.join(__dirname, '/'),
   distPath: path.join(__dirname, 'build'),
   srcPath: path.join(__dirname, 'src'),
 };
@@ -105,6 +107,9 @@ module.exports = (env, options) => {
       new HtmlWebpackPlugin({
         template: srcPathExtend('index.html'),
         favicon: srcPathExtend('favicon.ico'),
+      }),
+      new Dotenv({
+        path: `${settings.root}.env.${process.env.NODE_ENV}`,
       }),
       new NodePolyfillPlugin(),
     ],

@@ -11,9 +11,9 @@
   },
   "private": true,
   "scripts": {
-    "start": "webpack-dev-server --mode development --open --progress",
-    "build:local": "webpack --mode production --progress && scp -r build/playthem-widget.min.js ~/playthem/backend/uploads/games",
-    "build": "webpack --mode production --progress && scp -r build/playthem-widget.min.js /var/www/backend/uploads/games && pm2 restart backend"
+    "start": "cross-env NODE_ENV=development webpack-dev-server --mode development --open --progress",
+    "build:local": "cross-env NODE_ENV=development webpack --mode production --progress && scp -r build/playthem-widget.min.js ~/playthem/backend/uploads/games",
+    "build": "cross-env NODE_ENV=production webpack --mode production --progress && scp -r build/playthem-widget.min.js /var/www/backend/uploads/games && pm2 restart backend"
   },
   "browserslist": [
     "> 1%",
@@ -35,8 +35,10 @@
     "babel-loader": "^8.2.5",
     "babel-preset-env": "^1.7.0",
     "clean-webpack-plugin": "^4.0.0",
+    "cross-env": "^7.0.3",
     "css-loader": "^6.7.1",
     "css-minimizer-webpack-plugin": "^4.1.0",
+    "dotenv-webpack": "^8.1.0",
     "favicons-webpack-plugin": "^5.0.2",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.0",
