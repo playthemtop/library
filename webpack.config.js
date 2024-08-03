@@ -92,7 +92,7 @@ module.exports = (env, options) => {
     },
     optimization: {
       // concatenateModules: false,
-      minimize: false,
+      minimize: true,
       minimizer: [
         new CssMinimizerPlugin(),
         '...',
