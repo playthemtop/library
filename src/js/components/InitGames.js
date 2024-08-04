@@ -381,7 +381,7 @@ class InitGames {
 
           if($(".matched").length === 2) {
             _.win();
-          } else if (!$(".matched").length && count >= 10) {
+          } else if (!$(".matched").length && count >= 6) {
             Memory.gameOver();
           }
         }
@@ -409,7 +409,7 @@ class InitGames {
         setTimeout(function() {
           const step = new Steps(data.elements, data.activeGameData);
           step.start();
-        }, 1500);
+        }, 500);
 
         setTimeout(function() {
           document.querySelector('.pwtRememberGameOver').remove();
