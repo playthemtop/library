@@ -152,7 +152,7 @@ if (process.env.NODE_ENV === 'development') {
     accessKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NmFhMjA3NTE4MzM4MjQxMDY4ZGUxZDgiLCJkb21haW4iOiJsb2NhbGhvc3QiLCJ0eXBlIjoiYWNjZXNzS2V5IiwiaWF0IjoxNzIyNDI1NzQyfQ.0h50TYPEJT6FyCiIoTVU5_uybpjo8aCcLs6JSO6gpXs',
     data: {
       params: PARAMS_DEFAULT,
-      game: 'remember', // roulette, scratch, remember | isPreview = true | not request api
+      game: 'roulette', // roulette, scratch, remember | isPreview = true | not request api
     },
     isPreview: true,
   });

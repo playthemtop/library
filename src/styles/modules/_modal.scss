@@ -182,6 +182,16 @@
         justify-content: center;
       }
     }
+    &_roulette {
+      @media screen and (max-width: 450px) {
+        bottom: -54px;
+      }
+      & span {
+        @media screen and (max-width: 450px) {
+          top: 25%;
+        }
+      }
+    }
   }
   &__close {
     position: absolute;
