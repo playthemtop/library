@@ -12,7 +12,7 @@ class ValidateAccessKey {
     const isValidateDomain = accessKeyDecode.domain !== window.location.hostname.replace(reg, '') || window.location.hostname.replace(reg, '') === 'localhost';
 
     if (!accessKeyDecode || (!isPreview && isValidateDomain) ) {
-      console.log('error: accessKeyDecode or hostname');
+      // console.log('error: accessKeyDecode or hostname');
       return false;
     };
 

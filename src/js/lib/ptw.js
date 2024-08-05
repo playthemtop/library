@@ -116,8 +116,6 @@ class PTW {
 
     const isIntervalStorage = await this.PTW_STORAGE.getItem('PTW_INTERVAL');
 
-    console.log('ptw: isIntervalStorage', isIntervalStorage);
-
     // Show trigger button after first show, if "trigger_button" is trues
     if (isIntervalStorage && trigger_button && !this.isPreview) {
       document.body.appendChild(ptwWidget);
