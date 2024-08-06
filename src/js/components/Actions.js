@@ -23,7 +23,7 @@ class Actions {
       const res = await new this.request(data);
 
       if (res.error) {
-        console.log(`error: ${res.error.msg}`);
+        // console.log(`error: ${res.error.msg}`);
         return 'error';
       }
 

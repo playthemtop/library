@@ -33,25 +33,43 @@ class PTW {
     await this.PTW_STORAGE.init();
 
     const activeGameData = await new Actions.init(this.accessKey, this.isPreview);
-    if (activeGameData === 'error') return;
 
-    this.activeGameData = {
-      params: (this.isPreview && (this.data && this.data.params)) || activeGameData.params,
-      game: (this.isPreview && (this.data && this.data.game)) || activeGameData.game,
+    if (activeGameData === 'error') {
+      return false;
+    }
+
+    const { display_pages: displayPages = [], is_display_pages: isGameDisplayedOnPages } = activeGameData?.params?.behavior?.general_settings || {};
+    const currentPath = window.location.pathname.slice(1);
+    const isCurrentPageInDisplayPages = displayPages.some(pageItem => pageItem === currentPath);
+
+    const shoInitModal = () => {
+      this.activeGameData = {
+        params: (this.isPreview && (this.data && this.data.params)) || activeGameData.params,
+        game: (this.isPreview && (this.data && this.data.game)) || activeGameData.game,
+      };
+
+      this.elements = new InitGames(this.activeGameData, this.isPreview);
+
+      this.modal = new Modal(
+        this.accessKey,
+        this.elements,
+        this.isPreview,
+        this.activeGameData,
+        null,
+        this.PTW_STORAGE,
+      );
+
+      this.modalShowWithGeneralSettings();
     };
 
-    this.elements = new InitGames(this.activeGameData, this.isPreview);
-
-    this.modal = new Modal(
-      this.accessKey,
-      this.elements,
-      this.isPreview,
-      this.activeGameData,
-      null,
-      this.PTW_STORAGE,
-    );
-
-    this.modalShowWithGeneralSettings();
+    // Logic for displaying a modal window if paginated display is specified
+    if (
+      displayPages.length === 0 || // If displayPages is empty, show the modal on all pages
+      (isGameDisplayedOnPages && isCurrentPageInDisplayPages) || // If the game should only be displayed on the specified pages
+      (!isGameDisplayedOnPages && !isCurrentPageInDisplayPages) // If the game should not be displayed on the specified pages
+    ) {
+      shoInitModal();
+    }
   };
 
   handleChange = () => {

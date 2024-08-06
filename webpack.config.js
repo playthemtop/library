@@ -89,12 +89,12 @@ module.exports = (env, options) => {
     devServer: {
       static: '/',
       historyApiFallback: true,
-      compress: true,
+      compress: false,
       port: 3000,
     },
     optimization: {
       // concatenateModules: false,
-      minimize: true,
+      minimize: false,
       minimizer: [
         new CssMinimizerPlugin(),
         '...',
