@@ -1,4 +1,6 @@
-.PtwModalFormWrap{
+@use "../mixins/animate";
+
+.PtwModalFormWrap {
   position: absolute;
   width: 100%;
   z-index: 2;
@@ -10,7 +12,8 @@
   }
 }
 .PtwModalRootForm {
-  background-color: #FFFFFF;	box-shadow: 0 8px 16px 0 rgba(113,153,195,0.32);
+  background-color: #ffffff;
+  box-shadow: 0 8px 16px 0 rgba(113, 153, 195, 0.32);
   border-radius: 8px;
   box-shadow: 0 0 10px 5px rgb(0 0 0 / 15%);
   display: flex;
@@ -26,8 +29,8 @@
   @media screen and (max-width: 370px) {
     padding: 20px;
   }
-  &:after{
-    content: '';
+  &:after {
+    content: "";
     display: block;
     position: absolute;
     bottom: -14px;
@@ -48,12 +51,12 @@
     }
   }
   &__input {
-    background-color: rgba(206,225,246,0.1);
-    border: 1px solid #CEE1F6;
+    background-color: rgba(206, 225, 246, 0.1);
+    border: 1px solid #cee1f6;
     border-radius: 4px;
     padding: 12px 15px;
     font-size: 14px;
-    color: #899BB0;
+    color: #899bb0;
     width: 100%;
     @media screen and (max-width: 450px) {
       font-size: 13px;
@@ -69,12 +72,12 @@
   }
 
   &_start {
-    @extend .fade-in-top;
+    @include animate.fade-in-top;
   }
   &_error {
-    @extend .shake-horizontal;
+    @include animate.shake-horizontal;
   }
   &_hide {
-    @extend .slide-out-blurred-top;
+    @include animate.slide-out-blurred-top;
   }
 }

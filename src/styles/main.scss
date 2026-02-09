@@ -1,8 +1,7 @@
-@import 'core/base';
-
-@import 'modules/modal';
-@import 'modules/form';
-@import 'modules/games';
-@import 'modules/widget';
-@import 'modules/win';
-@import 'modules/animate';
+// @use "./mixins/animate";
+@use "./core/base";
+@use "./modules/modal";
+@use "./modules/form";
+@use "./modules/games";
+@use "./modules/widget";
+@use "./modules/win";
